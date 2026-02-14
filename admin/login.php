@@ -2,7 +2,7 @@
 require_once __DIR__ . '/config.php';
 
 if (!empty($_SESSION['admin_user'])) {
-    header('Location: stocks.php');
+    header('Location: ' . lang_url('stocks.php', current_lang()));
     exit;
 }
 
@@ -18,19 +18,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($user && password_verify($password, $user['password_hash'])) {
         $_SESSION['admin_user'] = $user['username'];
-        header('Location: stocks.php');
+        header('Location: ' . lang_url('stocks.php', current_lang()));
         exit;
     }
 
-    $error = 'Username atau password salah.';
+    $error = t('invalid_credentials');
 }
+
+$lang = current_lang();
+$languages = get_supported_languages();
 ?>
 <!doctype html>
-<html lang="id">
+<html lang="<?php echo htmlspecialchars($lang, ENT_QUOTES, 'UTF-8'); ?>">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Login Admin - Arunika Digital</title>
+    <title><?php echo htmlspecialchars(t('login_title'), ENT_QUOTES, 'UTF-8'); ?></title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -42,23 +45,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <body>
     <main class="auth">
       <section class="card">
-        <h1>Masuk Admin</h1>
-        <p>Gunakan akun admin untuk mengelola stok.</p>
+        <div class="lang-switcher">
+          <span><?php echo htmlspecialchars(t('language'), ENT_QUOTES, 'UTF-8'); ?>:</span>
+          <?php foreach ($languages as $code => $label): ?>
+            <a class="<?php echo $lang === $code ? 'active' : ''; ?>" href="<?php echo htmlspecialchars(lang_url('login.php', $code), ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($label, ENT_QUOTES, 'UTF-8'); ?></a>
+          <?php endforeach; ?>
+        </div>
+        <h1><?php echo htmlspecialchars(t('login_heading'), ENT_QUOTES, 'UTF-8'); ?></h1>
+        <p><?php echo htmlspecialchars(t('login_subtitle'), ENT_QUOTES, 'UTF-8'); ?></p>
         <?php if ($error): ?>
           <div class="alert"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></div>
         <?php endif; ?>
         <form method="post" class="form">
           <label>
-            Username
+            <?php echo htmlspecialchars(t('username'), ENT_QUOTES, 'UTF-8'); ?>
             <input type="text" name="username" required />
           </label>
           <label>
-            Password
+            <?php echo htmlspecialchars(t('password'), ENT_QUOTES, 'UTF-8'); ?>
             <input type="password" name="password" required />
           </label>
-          <button type="submit">Masuk</button>
+          <button type="submit"><?php echo htmlspecialchars(t('login_button'), ENT_QUOTES, 'UTF-8'); ?></button>
         </form>
-        <p class="hint">Default: admin / admin123 (ubah via env).</p>
+        <p class="hint"><?php echo htmlspecialchars(t('default_hint'), ENT_QUOTES, 'UTF-8'); ?></p>
       </section>
     </main>
   </body>

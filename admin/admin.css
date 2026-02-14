@@ -176,3 +176,32 @@ button.danger {
     flex-wrap: wrap;
   }
 }
+
+
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.topbar .lang-switcher {
+  margin-bottom: 0;
+}
+
+.lang-switcher a {
+  font-size: 0.85rem;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.lang-switcher a.active {
+  color: #fff;
+  background: var(--primary);
+  border-color: var(--primary);
+}
